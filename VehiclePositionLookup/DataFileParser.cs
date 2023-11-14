@@ -18,8 +18,7 @@ namespace VehiclePositionLookup
         }
 
         internal static byte[] ReadFileData(string datafilepath)
-        {
-            //TODO: needs to be in app config...
+        {            
             string localFilePath = Util.GetLocalFilePath(datafilepath);
             if (File.Exists(localFilePath))
                 return File.ReadAllBytes(localFilePath);

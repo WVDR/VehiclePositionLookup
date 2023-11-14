@@ -14,12 +14,14 @@ namespace VehiclePositionLookup
             {
                 //Pass the binary file location or assign default.
                 //being the current location.
-                var binaryfilelocation = ".\\VehiclePositions.dat";
-                if(args.Length > 0)
+                var binaryFileLocation = ".\\VehiclePositions.dat";
+                var benchmarkFileLocation = "benchmark.txt";
+                if (args.Length > 0)
                 {
-                    binaryfilelocation = args[0];
+                    binaryFileLocation = args[0];
                 }
-                VehicleFinderSlow.FindClosestN(Program.GetLookupPositions(), binaryfilelocation);
+                VehicleFinderSlow.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);
+                VehicleFinderFasterAttemp1.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);
                 Console.WriteLine("Press any key to continue...");
                 Console.ReadKey();
             }
