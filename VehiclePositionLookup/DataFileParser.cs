@@ -7,9 +7,9 @@ namespace VehiclePositionLookup
 {
     internal class DataFileParser
     {
-        internal static List<VehiclePosition> ReadDataFile()
+        internal static List<VehiclePosition> ReadDataFile(string datafilepath)
         {
-            byte[] data = DataFileParser.ReadFileData();
+            byte[] data = DataFileParser.ReadFileData(datafilepath);
             List<VehiclePosition> vehiclePositionList = new List<VehiclePosition>();
             int offset = 0;
             while (offset < data.Length)
@@ -17,13 +17,14 @@ namespace VehiclePositionLookup
             return vehiclePositionList;
         }
 
-        internal static byte[] ReadFileData()
+        internal static byte[] ReadFileData(string datafilepath)
         {
-            string localFilePath = Util.GetLocalFilePath("VehiclePositions.dat");
+            //TODO: needs to be in app config...
+            string localFilePath = Util.GetLocalFilePath(datafilepath);
             if (File.Exists(localFilePath))
                 return File.ReadAllBytes(localFilePath);
             Console.WriteLine("Data file not found.");
-            return (byte[])null;
+            throw new FileNotFoundException(string.Format($"'{datafilepath}': Data file not found."));
         }
 
         private static VehiclePosition ReadVehiclePosition(byte[] data, ref int offset) => VehiclePosition.FromBytes(data, ref offset);

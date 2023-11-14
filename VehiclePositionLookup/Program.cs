@@ -10,9 +10,27 @@ namespace VehiclePositionLookup
 
         private static void Main(string[] args)
         {
-            VehicleFinderSlow.FindClosestN(Program.GetLookupPositions());
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
+            try
+            {
+                //Pass the binary file location or assign default.
+                //being the current location.
+                var binaryfilelocation = ".\\VehiclePositions.dat";
+                if(args.Length > 0)
+                {
+                    binaryfilelocation = args[0];
+                }
+                VehicleFinderSlow.FindClosestN(Program.GetLookupPositions(), binaryfilelocation);
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+                Console.ReadKey();
+                throw;
+            }
+            
         }
 
         private static Coord[] GetLookupPositions()

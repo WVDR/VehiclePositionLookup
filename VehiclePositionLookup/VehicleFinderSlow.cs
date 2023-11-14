@@ -6,11 +6,11 @@ namespace VehiclePositionLookup
 {
     internal class VehicleFinderSlow
     {
-        internal static void FindClosestN(Coord[] coords)
+        internal static void FindClosestN(Coord[] coords, string datafilepath)
         {
             List<VehiclePosition> vehiclePositionList = new List<VehiclePosition>();
             Stopwatch stopwatch = Stopwatch.StartNew();
-            List<VehiclePosition> vehiclePositions = DataFileParser.ReadDataFile();
+            List<VehiclePosition> vehiclePositions = DataFileParser.ReadDataFile(datafilepath);
             stopwatch.Stop();
             long elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
             stopwatch.Restart();
@@ -23,20 +23,20 @@ namespace VehiclePositionLookup
             Console.WriteLine();
         }
 
-        internal static void FindClosest(float latitude, float longitude)
+        internal static void FindClosest(float latitude, float longitude, string datafilepath)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
             double nearestDistance;
-            VehiclePosition nearest = VehicleFinderSlow.GetNearest(DataFileParser.ReadDataFile(), latitude, longitude, out nearestDistance);
+            VehiclePosition nearest = VehicleFinderSlow.GetNearest(DataFileParser.ReadDataFile(datafilepath), latitude, longitude, out nearestDistance);
             stopwatch.Stop();
             Console.WriteLine(string.Format("Execution time : {0} ms", (object)stopwatch.ElapsedMilliseconds));
             Console.WriteLine(string.Format("{0} : {1}", (object)nearestDistance, (object)nearest.GetTextSummary()));
         }
 
-        internal static void FindClosest(int count, float latitude, float longitude)
+        internal static void FindClosest(int count, float latitude, float longitude, string datafilepath)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
-            SortedList<double, VehiclePosition> sortedList = VehicleFinderSlow.AddNearestPositions(DataFileParser.ReadDataFile(), count, latitude, longitude);
+            SortedList<double, VehiclePosition> sortedList = VehicleFinderSlow.AddNearestPositions(DataFileParser.ReadDataFile(datafilepath), count, latitude, longitude);
             stopwatch.Stop();
             Console.WriteLine(string.Format("Execution time : {0} ms", (object)stopwatch.ElapsedMilliseconds));
             foreach (double key in (IEnumerable<double>)sortedList.Keys)

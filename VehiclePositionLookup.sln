@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehiclePositionLookup", "Ve
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoordinatePortable", "GeoCoordinatePortable\GeoCoordinatePortable.csproj", "{F2094B5D-2958-476C-8AE7-C6353D517540}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehiclePositionLookup.Tests", "VehiclePositionLookup.Tests\VehiclePositionLookup.Tests.csproj", "{88BF8453-888E-4C61-A918-8C34400E05A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F2094B5D-2958-476C-8AE7-C6353D517540}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2094B5D-2958-476C-8AE7-C6353D517540}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2094B5D-2958-476C-8AE7-C6353D517540}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88BF8453-888E-4C61-A918-8C34400E05A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88BF8453-888E-4C61-A918-8C34400E05A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88BF8453-888E-4C61-A918-8C34400E05A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88BF8453-888E-4C61-A918-8C34400E05A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
