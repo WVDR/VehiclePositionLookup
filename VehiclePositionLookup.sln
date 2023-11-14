@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehiclePositionLookup", "VehiclePositionLookup\VehiclePositionLookup.csproj", "{5F189E31-648D-419A-BB62-1EDCA622A4A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoordinatePortable", "GeoCoordinatePortable\GeoCoordinatePortable.csproj", "{F2094B5D-2958-476C-8AE7-C6353D517540}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5F189E31-648D-419A-BB62-1EDCA622A4A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F189E31-648D-419A-BB62-1EDCA622A4A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F189E31-648D-419A-BB62-1EDCA622A4A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F189E31-648D-419A-BB62-1EDCA622A4A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2094B5D-2958-476C-8AE7-C6353D517540}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2094B5D-2958-476C-8AE7-C6353D517540}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2094B5D-2958-476C-8AE7-C6353D517540}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2094B5D-2958-476C-8AE7-C6353D517540}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {22B50354-9D60-4B4E-9F60-94B072F49D03}
+	EndGlobalSection
+EndGlobal
