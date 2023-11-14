@@ -87,13 +87,13 @@ namespace GeoCoordinatePortable
         public double Speed
         {
             get => this._speed;
-            set => this._speed = value >= 0.0 ? value : throw new ArgumentOutOfRangeException("speed", "Argument must be non negative");
+            set => this._speed = (double.IsNaN(value) || value >= 0.0) ? value : throw new ArgumentOutOfRangeException("speed", $"'{value}': Argument must be non negative");
         }
 
         public double Course
         {
             get => this._course;
-            set => this._course = value >= 0.0 && value <= 360.0 ? value : throw new ArgumentOutOfRangeException("course", "Argument must be in range 0 to 360");
+            set => this._course = double.IsNaN(value) || (value >= 0.0 && value <= 360.0) ? value : throw new ArgumentOutOfRangeException("course", $"'{value}': Argument must be in range 0 to 360");
         }
 
         public bool IsUnknown => this.Equals(GeoCoordinate.Unknown);
