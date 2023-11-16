@@ -20,15 +20,11 @@ namespace VehiclePositionLookup
                 {
                     binaryFileLocation = args[0];
                 }
-                VehicleFinderSlow.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);
-                //VehicleFinderFasterAttemp1.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);
-                //VehicleFinderFasterAttemp2.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);
-                //VehicleFinderFasterAttemp2_AsParallel.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);
-                //VehicleFinderFasterAttemp3_QuickSort.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);
-                //VehicleFinderFasterAttemp4_QuickSort.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);
-                //VehicleFinderFasterAttemp4_Partitioner.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);
-                VehicleFinderFasterAttemp7_Haversine.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);
-                VehicleFinderFasterAttemp7_HaversineSegmented.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);
+                VehicleFinderSlow.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);//Slowest
+                VehicleFinderFasterAttemp7_Haversine.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);// Faster
+                VehicleFinderFasterAttemp7_HaversineSegmented.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);// Can be the fastest... but less accurate.
+                VehicleFinderFasterAttemp7_HaversineAsParallel.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);// Fastest while keeping accuracy.
+                // TODO change the data access method... but that requires nuget to integrate and is out of scope.
                 Console.WriteLine("Press any key to continue...");
                 Console.ReadKey();
             }
