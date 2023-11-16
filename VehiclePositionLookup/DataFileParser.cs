@@ -17,6 +17,15 @@ namespace VehiclePositionLookup
             return vehiclePositionList;
         }
 
+        internal static List<VehiclePosition> ReadDataFileOffset(string datafilepath, int offset)
+        {
+            byte[] data = ReadFileData(datafilepath);
+            List<VehiclePosition> vehiclePositionList = new List<VehiclePosition>();            
+            while (offset < data.Length)
+                vehiclePositionList.Add(ReadVehiclePosition(data, ref offset));
+            return vehiclePositionList;
+        }
+
         internal static byte[] ReadFileData(string datafilepath)
         {            
             string localFilePath = Util.GetLocalFilePath(datafilepath);

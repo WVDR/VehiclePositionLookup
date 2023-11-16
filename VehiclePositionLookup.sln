@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehiclePositionLookup", "VehiclePositionLookup\VehiclePositionLookup.csproj", "{5F189E31-648D-419A-BB62-1EDCA622A4A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehiclePositionLookup", "VehiclePositionLookup\VehiclePositionLookup.csproj", "{5F189E31-648D-419A-BB62-1EDCA622A4A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoordinatePortable", "GeoCoordinatePortable\GeoCoordinatePortable.csproj", "{F2094B5D-2958-476C-8AE7-C6353D517540}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoCoordinatePortable", "GeoCoordinatePortable\GeoCoordinatePortable.csproj", "{F2094B5D-2958-476C-8AE7-C6353D517540}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehiclePositionLookup.Tests", "VehiclePositionLookup.Tests\VehiclePositionLookup.Tests.csproj", "{88BF8453-888E-4C61-A918-8C34400E05A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehiclePositionLookup.Tests", "VehiclePositionLookup.Tests\VehiclePositionLookup.Tests.csproj", "{88BF8453-888E-4C61-A918-8C34400E05A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClusterCreator", "ClusterCreator\ClusterCreator.csproj", "{CF644BEF-76FF-439B-8262-4DA565E63102}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{88BF8453-888E-4C61-A918-8C34400E05A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88BF8453-888E-4C61-A918-8C34400E05A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88BF8453-888E-4C61-A918-8C34400E05A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF644BEF-76FF-439B-8262-4DA565E63102}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF644BEF-76FF-439B-8262-4DA565E63102}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF644BEF-76FF-439B-8262-4DA565E63102}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF644BEF-76FF-439B-8262-4DA565E63102}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

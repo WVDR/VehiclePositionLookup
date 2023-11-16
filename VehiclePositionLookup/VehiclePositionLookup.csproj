@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GeoCoordinatePortable\GeoCoordinatePortable.csproj" />
+    <ProjectReference Include="..\ClusterCreator\ClusterCreator.csproj" />
   </ItemGroup>
 
 </Project>

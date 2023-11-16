@@ -1,29 +1,45 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using ClusterCreator;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace VehiclePositionLookup
 {
-    internal class VehicleFinderFasterAttemp5_MemoryCache
+    internal class VehicleFinderFasterAttemp5_MaxDistance
     {
         internal static void FindClosestN(Coord[] coords, string dataFilePath, string benchmarkFileLocation)
         {
             List<VehiclePosition> vehiclePositionList = new List<VehiclePosition>();
             Stopwatch stopwatch = Stopwatch.StartNew();
-            var dictionary = DataFileParserMemoryCache.ReadDataFileIntoMemoryCache(dataFilePath);
+            List<VehiclePosition> vehiclePositions = DataFileParser.ReadDataFile(dataFilePath);
+            List<double> distanceList = new List<double>();
+            List<double> distanceListFromSuppliedList = new List<double>();
             stopwatch.Stop();
             long elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
             stopwatch.Restart();
 
-            // Using memcache... could have used a dictionary but we can go from this to distrobuted mem chache or run a cron job to refresh.
-            // since we are not using ef you would need to refresh the service in memory version, with the db store there as well.
+            //Normally we would be able to specify each time what the distance is to search per cluster/group...
+            //here we are pre-determining the max and then  working backwards, to min, for the most optimal.
+
+            for (int i = 1; i <= coords.Length-1; i++)
+            {
+                var distance = DistanceCalculator.GetDistanceFromLatLonInKm(coords[i - 1].Latitude, coords[i - 1].Longitude, coords[i].Latitude, coords[i].Longitude);
+                distanceListFromSuppliedList.Add(distance);
+
+            }
+
             foreach (Coord coord in coords)
             {
-                
+                vehiclePositionList.Add(GetNearest(vehiclePositions, coord.Latitude, coord.Longitude, out _));
+                foreach (VehiclePosition vehiclePosition in vehiclePositions)
+                {
+                    var distance = DistanceCalculator.GetDistanceFromLatLonInKm(coord.Latitude, coord.Longitude, vehiclePosition.Latitude, vehiclePosition.Longitude);
+                    distanceList.Add(distance);
+                }
                 
             }
                 
@@ -33,7 +49,7 @@ namespace VehiclePositionLookup
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Clear();
 
-            stringBuilder.AppendLine($"{nameof(VehicleFinderFasterAttemp5_MemoryCache)} Benchmark Start: {DateTime.Now}");
+            stringBuilder.AppendLine($"{nameof(VehicleFinderFasterAttemp5_MaxDistance)} Benchmark Start: {DateTime.Now}");
             stringBuilder.AppendLine();
             foreach (VehiclePosition vehiclePosition in vehiclePositionList)
             {
@@ -42,10 +58,12 @@ namespace VehiclePositionLookup
             }
             stringBuilder.AppendLine();
             stringBuilder.AppendLine(string.Format("Data file read execution time : {0} ms", (object)elapsedMilliseconds));
-            stringBuilder.AppendLine(string.Format("Closest position calculation execution time : {0} ms", (object)stopwatch.ElapsedMilliseconds));
+            stringBuilder.AppendLine(string.Format("Max distance calculation execution time : {0} ms", (object)stopwatch.ElapsedMilliseconds));
             stringBuilder.AppendLine(string.Format("Total execution time : {0} ms", (object)(elapsedMilliseconds + stopwatch.ElapsedMilliseconds)));
+            stringBuilder.AppendLine(string.Format("Max distance from data set : {0} km", distanceListFromSuppliedList.Max()));
+            stringBuilder.AppendLine(string.Format("Max distance from supplied set : {0} km", distanceList.Max()));
             stringBuilder.AppendLine();
-            stringBuilder.AppendLine($"{nameof(VehicleFinderFasterAttemp5_MemoryCache)} Benchmark End: {DateTime.Now}");
+            stringBuilder.AppendLine($"{nameof(VehicleFinderFasterAttemp5_MaxDistance)} Benchmark End: {DateTime.Now}");
             stringBuilder.AppendLine();
             Console.WriteLine(stringBuilder.ToString());
 

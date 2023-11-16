@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,32 +7,27 @@ using System.Threading.Tasks;
 
 namespace VehiclePositionLookup
 {
-    internal class VehicleFinderFasterAttemp5_MemoryCache
+    internal class VehicleFinderFasterAttemp7_Haversine
     {
         internal static void FindClosestN(Coord[] coords, string dataFilePath, string benchmarkFileLocation)
         {
             List<VehiclePosition> vehiclePositionList = new List<VehiclePosition>();
             Stopwatch stopwatch = Stopwatch.StartNew();
-            var dictionary = DataFileParserMemoryCache.ReadDataFileIntoMemoryCache(dataFilePath);
+            List<VehiclePosition> vehiclePositions = DataFileParser.ReadDataFile(dataFilePath);
             stopwatch.Stop();
             long elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
             stopwatch.Restart();
 
-            // Using memcache... could have used a dictionary but we can go from this to distrobuted mem chache or run a cron job to refresh.
-            // since we are not using ef you would need to refresh the service in memory version, with the db store there as well.
+            //Just the basic rework and looking at the differance.
             foreach (Coord coord in coords)
-            {
-                
-                
-            }
-                
+                vehiclePositionList.Add(HaversineCalculator.FindClosestLocation(vehiclePositions,coord));
 
             stopwatch.Stop();
 
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Clear();
 
-            stringBuilder.AppendLine($"{nameof(VehicleFinderFasterAttemp5_MemoryCache)} Benchmark Start: {DateTime.Now}");
+            stringBuilder.AppendLine($"{nameof(VehicleFinderFasterAttemp7_Haversine)} Benchmark Start: {DateTime.Now}");
             stringBuilder.AppendLine();
             foreach (VehiclePosition vehiclePosition in vehiclePositionList)
             {
@@ -45,7 +39,7 @@ namespace VehiclePositionLookup
             stringBuilder.AppendLine(string.Format("Closest position calculation execution time : {0} ms", (object)stopwatch.ElapsedMilliseconds));
             stringBuilder.AppendLine(string.Format("Total execution time : {0} ms", (object)(elapsedMilliseconds + stopwatch.ElapsedMilliseconds)));
             stringBuilder.AppendLine();
-            stringBuilder.AppendLine($"{nameof(VehicleFinderFasterAttemp5_MemoryCache)} Benchmark End: {DateTime.Now}");
+            stringBuilder.AppendLine($"{nameof(VehicleFinderFasterAttemp7_Haversine)} Benchmark End: {DateTime.Now}");
             stringBuilder.AppendLine();
             Console.WriteLine(stringBuilder.ToString());
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using ClusterCreator;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,32 +11,24 @@ namespace VehiclePositionLookup
     internal class DataFileParserMemoryCache
     {
         public static MemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
-        internal static Dictionary<string, List<VehiclePosition>> ReadDataFileIntoMemoryCache(string datafilepath)
+        internal static Dictionary<int, BaseCluster> ReadDataFileIntoMemoryCache(string datafilepath)
         {
             byte[] data = ReadFileData(datafilepath);
             
             int offset = 0;
             Dictionary <string,List<VehiclePosition>> VehiclePositionDictionary = new Dictionary<string, List<VehiclePosition>>();
+            List<BaseCluster> clusters = new List<BaseCluster>();
+            List<VehiclePosition> vehiclePositionList = new List<VehiclePosition>();
             while (offset < data.Length)
             {
-                List<VehiclePosition> vehiclePositionList = new List<VehiclePosition>();
-                VehiclePosition vehiclePosition = ReadVehiclePosition(data, ref offset);
-                vehiclePositionList.Add(vehiclePosition);
-
-                string vehicalePositionId = JoinCoOrdinates(vehiclePosition.Latitude, vehiclePosition.Longitude);
-                if (_cache.TryGetValue(vehicalePositionId, out List<VehiclePosition> exsistingVehiclePosition))
-                {
-                    exsistingVehiclePosition.Add(vehiclePosition);
-                    _cache.Set(vehicalePositionId, exsistingVehiclePosition, DateTime.UtcNow.AddDays(7));
-                    VehiclePositionDictionary[vehicalePositionId].Add(vehiclePosition);
-                }
-                else
-                {
-                    _cache.Set(vehicalePositionId, vehiclePositionList, DateTime.UtcNow.AddDays(7));
-                    VehiclePositionDictionary.Add(vehicalePositionId, vehiclePositionList);
-                }             
+                var vehicalpos = ReadVehiclePosition(data, ref offset);
+                BaseCluster baseCluster = new BaseCluster(vehicalpos.ID, vehicalpos.Registration, vehicalpos.Latitude,vehicalpos.Longitude);
+                clusters.Add(baseCluster);
+                vehiclePositionList.Add(vehicalpos);
             }
-            return VehiclePositionDictionary;
+            VehiclePositionCluster vehiclePositionCluster = new ClusterCreator.VehiclePositionCluster();
+            var result = vehiclePositionCluster.GetClusters(clusters, 800);
+            return result;
 
 
         }

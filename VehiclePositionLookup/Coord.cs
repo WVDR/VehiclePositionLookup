@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VehiclePositionLookup
 {
-    internal struct Coord
+    public struct Coord
     {
         public float Latitude;
         public float Longitude;

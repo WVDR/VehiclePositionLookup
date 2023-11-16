@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VehiclePositionLookup
 {
-    internal class VehiclePosition : IComparable<VehiclePosition>
+    public class VehiclePosition : IComparable<VehiclePosition>
     {
         public int ID;
         public string Registration;
