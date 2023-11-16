@@ -7,49 +7,47 @@ using System.Threading.Tasks;
 
 namespace VehiclePositionLookup
 {
-    internal class VehicleFinderFasterAttemp1
+    internal class VehicleFinderFasterAttemp2
     {
         internal static void FindClosestN(Coord[] coords, string dataFilePath, string benchmarkFileLocation)
         {
-            List<VehiclePosition> vehiclePositionList = new List<VehiclePosition>();
-            Stopwatch stopwatch = Stopwatch.StartNew();
             List<VehiclePosition> vehiclePositions = DataFileParser.ReadDataFile(dataFilePath);
+
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            
+            List<VehiclePosition> vehiclePositionList = coords                
+                .Select(coord => GetNearest(vehiclePositions, coord.Latitude, coord.Longitude, out _))
+                .ToList();
+
             stopwatch.Stop();
+
             long elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
-            stopwatch.Restart();
-
-            //Just the basic rework and looking at the differance.
-            foreach (Coord coord in coords)
-                vehiclePositionList.Add(GetNearest(vehiclePositions, coord.Latitude, coord.Longitude, out _));
-
-            stopwatch.Stop();
 
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Clear();
-
-            stringBuilder.AppendLine($"{nameof(VehicleFinderFasterAttemp1)} Benchmark Start: {DateTime.Now}");
+            stringBuilder.AppendLine($"{nameof(VehicleFinderFasterAttemp2)} Benchmark Start: {DateTime.Now}");
             stringBuilder.AppendLine();
+
             foreach (VehiclePosition vehiclePosition in vehiclePositionList)
             {
                 stringBuilder.AppendLine(vehiclePosition.GetTextSummary());
-
             }
+
             stringBuilder.AppendLine();
-            stringBuilder.AppendLine(string.Format("Data file read execution time : {0} ms", (object)elapsedMilliseconds));
-            stringBuilder.AppendLine(string.Format("Closest position calculation execution time : {0} ms", (object)stopwatch.ElapsedMilliseconds));
-            stringBuilder.AppendLine(string.Format("Total execution time : {0} ms", (object)(elapsedMilliseconds + stopwatch.ElapsedMilliseconds)));
+            stringBuilder.AppendLine($"Data file read execution time: {elapsedMilliseconds} ms");
+            stringBuilder.AppendLine($"Closest position calculation execution time: {stopwatch.ElapsedMilliseconds} ms");
+            stringBuilder.AppendLine($"Total execution time: {elapsedMilliseconds + stopwatch.ElapsedMilliseconds} ms");
+            stringBuilder.AppendLine($"{nameof(VehicleFinderFasterAttemp2)} Benchmark End: {DateTime.Now}");
             stringBuilder.AppendLine();
-            stringBuilder.AppendLine($"{nameof(VehicleFinderFasterAttemp1)} Benchmark End: {DateTime.Now}");
-            stringBuilder.AppendLine();
+
             Console.WriteLine(stringBuilder.ToString());
 
+            // Use a using statement to ensure proper resource disposal
             using (StreamWriter writer = new StreamWriter(benchmarkFileLocation, true))
             {
                 // Write the data to the file
                 writer.Write(stringBuilder.ToString());
-                writer.Close();
             }
-        }        
+        }
 
         internal static VehiclePosition GetNearest(
           IEnumerable<VehiclePosition> vehiclePositions,

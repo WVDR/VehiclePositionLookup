@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Caching.Memory;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,27 +8,40 @@ using System.Threading.Tasks;
 
 namespace VehiclePositionLookup
 {
-    internal class VehicleFinderFasterAttemp1
+    internal class VehicleFinderFasterAttemp5_MemoryCache
     {
         internal static void FindClosestN(Coord[] coords, string dataFilePath, string benchmarkFileLocation)
         {
             List<VehiclePosition> vehiclePositionList = new List<VehiclePosition>();
             Stopwatch stopwatch = Stopwatch.StartNew();
-            List<VehiclePosition> vehiclePositions = DataFileParser.ReadDataFile(dataFilePath);
+            var dictionary = DataFileParserMemoryCache.ReadDataFileIntoMemoryCache(dataFilePath);
             stopwatch.Stop();
             long elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
             stopwatch.Restart();
 
-            //Just the basic rework and looking at the differance.
+            // Using memcache... could have used a dictionary but we can go from this to distrobuted mem chache or run a cron job to refresh.
+            // since we are not using ef you would need to refresh the service in memory version, with the db store there as well.
             foreach (Coord coord in coords)
-                vehiclePositionList.Add(GetNearest(vehiclePositions, coord.Latitude, coord.Longitude, out _));
+            {
+                var coOrdinateKey = DataFileParserMemoryCache.JoinCoOrdinates(coord.Latitude, coord.Longitude);
+                if (DataFileParserMemoryCache._cache.TryGetValue(coOrdinateKey, out List<VehiclePosition> vehiclePositions))
+                {
+                    vehiclePositionList.Add(GetNearest(vehiclePositions, coord.Latitude, coord.Longitude, out _));
+                }
+                else if(dictionary.ContainsKey(DataFileParserMemoryCache.JoinCoOrdinates(coord.Latitude, coord.Longitude)))
+                {
+                    vehiclePositionList.Add(GetNearest(dictionary[coOrdinateKey], coord.Latitude, coord.Longitude, out _));
+                }
+                
+            }
+                
 
             stopwatch.Stop();
 
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Clear();
 
-            stringBuilder.AppendLine($"{nameof(VehicleFinderFasterAttemp1)} Benchmark Start: {DateTime.Now}");
+            stringBuilder.AppendLine($"{nameof(VehicleFinderFasterAttemp5_MemoryCache)} Benchmark Start: {DateTime.Now}");
             stringBuilder.AppendLine();
             foreach (VehiclePosition vehiclePosition in vehiclePositionList)
             {
@@ -39,7 +53,7 @@ namespace VehiclePositionLookup
             stringBuilder.AppendLine(string.Format("Closest position calculation execution time : {0} ms", (object)stopwatch.ElapsedMilliseconds));
             stringBuilder.AppendLine(string.Format("Total execution time : {0} ms", (object)(elapsedMilliseconds + stopwatch.ElapsedMilliseconds)));
             stringBuilder.AppendLine();
-            stringBuilder.AppendLine($"{nameof(VehicleFinderFasterAttemp1)} Benchmark End: {DateTime.Now}");
+            stringBuilder.AppendLine($"{nameof(VehicleFinderFasterAttemp5_MemoryCache)} Benchmark End: {DateTime.Now}");
             stringBuilder.AppendLine();
             Console.WriteLine(stringBuilder.ToString());
 

@@ -22,6 +22,12 @@ namespace VehiclePositionLookup
                 }
                 VehicleFinderSlow.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);
                 VehicleFinderFasterAttemp1.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);
+                //VehicleFinderFasterAttemp2.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);
+                VehicleFinderFasterAttemp2_AsParallel.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);
+                //VehicleFinderFasterAttemp3_QuickSort.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);
+                //VehicleFinderFasterAttemp4_QuickSort.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);
+                //VehicleFinderFasterAttemp4_Partitioner.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);
+                VehicleFinderFasterAttemp5_MemoryCache.FindClosestN(Program.GetLookupPositions(), binaryFileLocation, benchmarkFileLocation);
                 Console.WriteLine("Press any key to continue...");
                 Console.ReadKey();
             }

@@ -9,11 +9,11 @@ namespace VehiclePositionLookup
     {
         internal static List<VehiclePosition> ReadDataFile(string datafilepath)
         {
-            byte[] data = DataFileParser.ReadFileData(datafilepath);
+            byte[] data = ReadFileData(datafilepath);
             List<VehiclePosition> vehiclePositionList = new List<VehiclePosition>();
             int offset = 0;
             while (offset < data.Length)
-                vehiclePositionList.Add(DataFileParser.ReadVehiclePosition(data, ref offset));
+                vehiclePositionList.Add(ReadVehiclePosition(data, ref offset));
             return vehiclePositionList;
         }
 

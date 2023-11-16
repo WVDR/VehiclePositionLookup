@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
 
 namespace VehiclePositionLookup
 {
-    internal class VehicleFinderFasterAttemp1
+    internal class VehicleFinderFasterAttemp4_Partitioner
     {
         internal static void FindClosestN(Coord[] coords, string dataFilePath, string benchmarkFileLocation)
         {
@@ -18,16 +16,15 @@ namespace VehiclePositionLookup
             long elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
             stopwatch.Restart();
 
-            //Just the basic rework and looking at the differance.
-            foreach (Coord coord in coords)
-                vehiclePositionList.Add(GetNearest(vehiclePositions, coord.Latitude, coord.Longitude, out _));
+            var partitioner = Partitioner.Create(vehiclePositions);
+            Parallel.ForEach(partitioner, coord => vehiclePositionList.Add(GetNearest(vehiclePositions, coord.Latitude, coord.Longitude, out _)));            
 
             stopwatch.Stop();
 
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Clear();
 
-            stringBuilder.AppendLine($"{nameof(VehicleFinderFasterAttemp1)} Benchmark Start: {DateTime.Now}");
+            stringBuilder.AppendLine($"{nameof(VehicleFinderFasterAttemp4_Partitioner)} Benchmark Start: {DateTime.Now}");
             stringBuilder.AppendLine();
             foreach (VehiclePosition vehiclePosition in vehiclePositionList)
             {
@@ -39,7 +36,7 @@ namespace VehiclePositionLookup
             stringBuilder.AppendLine(string.Format("Closest position calculation execution time : {0} ms", (object)stopwatch.ElapsedMilliseconds));
             stringBuilder.AppendLine(string.Format("Total execution time : {0} ms", (object)(elapsedMilliseconds + stopwatch.ElapsedMilliseconds)));
             stringBuilder.AppendLine();
-            stringBuilder.AppendLine($"{nameof(VehicleFinderFasterAttemp1)} Benchmark End: {DateTime.Now}");
+            stringBuilder.AppendLine($"{nameof(VehicleFinderFasterAttemp4_Partitioner)} Benchmark End: {DateTime.Now}");
             stringBuilder.AppendLine();
             Console.WriteLine(stringBuilder.ToString());
 

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VehiclePositionLookup
 {
-    internal class VehiclePosition
+    internal class VehiclePosition : IComparable<VehiclePosition>
     {
         public int ID;
         public string Registration;
@@ -47,6 +47,19 @@ namespace VehiclePositionLookup
             vehiclePosition.RecordedTimeUTC = Util.FromCTime(uint64);
             offset += 8;
             return vehiclePosition;
+        }
+
+        public int CompareTo(VehiclePosition? other)
+        {
+            if (other == null)
+            {
+                // Consider null to be greater
+                return 1;
+            }
+
+            // Compare based on the Timestamp property
+            return this.Registration.CompareTo(other.Registration);
+            
         }
     }
 
